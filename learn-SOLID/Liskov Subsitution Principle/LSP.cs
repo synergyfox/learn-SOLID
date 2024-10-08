@@ -83,77 +83,66 @@ namespace learn_SOLID.Liskov_Subsitution_Principle
         #endregion
 
         #region Example-2
+        //Before LSP
 
-        public class BankAccount
+        public class Bird
+
         {
-            public string AccountNumber { get; set; }
-            public decimal Balance { get; set; }
-            public BankAccount(string accountNumber, decimal balance)
+            public virtual void Fly()
             {
-                AccountNumber = accountNumber;
-                Balance = balance;
-            }
-            public virtual void Deposit(decimal amount)
-            {
-                Balance += amount;
-                Console.WriteLine($"Deposit: {amount}, Total Amount: {Balance}");
-            }
-            public virtual void Withdraw(decimal amount)
-            {
-                if (amount <= Balance)
-                {
-                    Balance -= amount;
-                }
-                else
-                {
-                    Console.WriteLine("Insufficient balance.");
-                }
-            }
-        }
-        //We have two derived classes: SavingsAccount and CurrentAccount
-        public class SavingsAccount : BankAccount
-        {
-            public decimal InterestRate { get; set; }
-            public SavingsAccount(string accountNumber, decimal balance, decimal interestRate)
-                : base(accountNumber, balance)
-            {
-                InterestRate = interestRate;
-            }
-            public override void Withdraw(decimal amount)
-            {
-                if (amount <= Balance)
-                {
-                    Balance -= amount;
-                    Console.WriteLine($"AccountNumber: {AccountNumber}, Withdraw: {amount}, Balance: {Balance}");
-                }
-                else
-                {
-                    Console.WriteLine($"AccountNumber: {AccountNumber}, Withdraw: {amount}, Insufficient Funds, Available Funds: {Balance}");
-                }
-            }
-        }
-        public class CurrentAccount : BankAccount
-        {
-            public decimal OverdraftLimit { get; set; }
-            public CurrentAccount(string accountNumber, decimal balance, decimal overdraftLimit)
-                : base(accountNumber, balance)
-            {
-                OverdraftLimit = overdraftLimit;
-            }
-            public override void Withdraw(decimal amount)
-            {
-                if (amount <= Balance + OverdraftLimit)
-                {
-                    Balance -= amount;
-                    Console.WriteLine($"AccountNumber: {AccountNumber}, Withdraw: {amount}, Balance: {Balance}");
-                }
-                else
-                {
-                    Console.WriteLine($"AccountNumber: {AccountNumber}, Exceeded Overdraft Limit.");
-                }
+                Console.WriteLine("The bird is flying.");
             }
         }
 
+        public class Penguin : Bird
+        {
+            // Penguins can't fly, so throwing an exception violates LSP
+            public override void Fly()
+            {
+                throw new Exception("Penguins can't fly.");
+            }
+        }
+
+        public class BirdWatcher
+        {
+            public void ObserveBird(Bird bird)
+            {
+                bird.Fly();
+            }
+        }
+
+        //After LSP
+
+
+        public abstract class _Bird
+        {
+            // Abstract bird class to define birds generally
+            public abstract void Move();
+        }
+
+        public class _FlyingBird : _Bird
+        {
+            public override void Move()
+            {
+                Console.WriteLine("The bird is flying.");
+            }
+        }
+
+        public class _Penguin : _Bird
+        {
+            public override void Move()
+            {
+                Console.WriteLine("The penguin is swimming.");
+            }
+        }
+
+        public class _BirdWatcher
+        {
+            public void ObserveBird(_Bird bird)
+            {
+                bird.Move();
+            }
+        }
 
         #endregion
     }

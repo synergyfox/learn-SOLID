@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interface Segregation Principle\" />
     <Folder Include="Dependency Inversion Principle\" />
   </ItemGroup>
 
